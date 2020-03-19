@@ -1,0 +1,5 @@
+<ng-container *ngIf="product$ | async as product">
+
+  <div class="container" [innerHTML]="product?.description"></div>
+
+</ng-container>

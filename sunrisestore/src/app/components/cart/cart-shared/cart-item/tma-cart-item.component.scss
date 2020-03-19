@@ -1,0 +1,23 @@
+.cx-cart-item-label {
+  font-size: var(--cx-font-size, 0.875rem);
+  font-weight: var(--cx-font-weight-bold);
+  line-height: 1.6;
+  color: var(--cx-color-secondary);
+  text-align: left;
+}
+
+.readonly-value{
+  font-size: var(--cx-font-size, 0.875rem);
+  font-weight: var(--cx-font-weight-normal);
+  line-height: 1.6;
+  color: var(--cx-color-secondary);
+  text-align: left;
+}
+
+.readonly{
+  font-size: var(--cx-font-size, 0.875rem);
+  font-weight: var(--cx-font-weight-bold);
+  line-height: 1.6;
+  color: var(--cx-color-secondary);
+  text-align: left;
+}

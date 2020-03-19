@@ -1,0 +1,31 @@
+<ng-container *ngIf="product$ | async as product">
+
+  <div class="container">
+    <h3>Includes:</h3>
+    <!--<p [innerHTML]="product?.summary" class="summary"></p>-->
+
+    <ul>
+      <li *ngFor="let preconfigSpo of product?.preconfigSpos">
+        {{ preconfigSpo?.name }}
+      </li>
+    </ul>
+
+  </div>
+
+</ng-container>
+
+<!--<ng-container *ngIf="product$ | async as product">-->
+<!--<ng-template [cxOutlet]="outlets.PRICE" [cxOutletContext]="{ product: product }">-->
+<!--<div class="price" aria-label="new item price">-->
+<!--{{ product?.price?.formattedValue }}-->
+<!--</div>-->
+<!--</ng-template>-->
+
+<!--<ng-template-->
+<!--[cxOutlet]="outlets.SUMMARY"-->
+<!--[cxOutletContext]="{ product: product }"-->
+<!--&gt;-->
+<!--<p [innerHTML]="product?.summary" class="summary"></p>-->
+<!--</ng-template>-->
+
+<!--</ng-container>-->

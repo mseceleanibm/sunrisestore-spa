@@ -1,0 +1,66 @@
+<div *ngIf="hasHeader" class="d-none d-md-block d-lg-block d-xl-block">
+  <div class="cx-item-list-header row">
+    <div class="cx-item-list-desc col-md-5 col-lg-5 col-xl-6">
+      {{ 'cartItems.description' | cxTranslate }}
+    </div>
+    <div class="cx-item-list-price col-md-3 col-lg-2 col-xl-2">
+      {{ 'cartItems.itemPrice' | cxTranslate }}
+    </div>
+    <div class="cx-item-list-qty col-md-2 col-lg-3 col-xl-2">
+      {{ 'cartItems.quantity' | cxTranslate }}
+    </div>
+
+    <!--<ng-container-->
+      <!--*ngIf="-->
+        <!--isSaveForLaterEnabled() && options.isSaveForLater;-->
+        <!--else totalHeader-->
+      <!--"-->
+    <!--&gt;-->
+      <!--<div class="cx-item-list-total col-md-2 col-lg-2 col-xl-2">-->
+        <!--{{ 'saveForLaterItems.stock' | cxTranslate }}-->
+      <!--</div>-->
+    <!--</ng-container>-->
+  </div>
+</div>
+
+<div [formGroup]="form">
+  <div class="cx-item-list-row" *ngFor="let item of items">
+    <div class="cx-item-list-items">
+      <ng-container *cxFeatureLevel="'!1.5'">
+        <cx-cart-item
+          [parent]="form.controls[item.product.code]"
+          [item]="item"
+          [isReadOnly]="isReadOnly"
+          [potentialProductPromotions]="getPotentialProductPromotionsForItem(item)"
+          [cartIsLoading]="cartIsLoading"
+          (remove)="removeEntry($event)"
+          (update)="updateEntry($event)"
+          (updateStartDate)="updateStartDateForEntry($event)"
+          (updateProvider)="updateCurrentProvider($event)"
+        >
+        </cx-cart-item>
+      </ng-container>
+
+      <ng-container *cxFeatureLevel="'1.5'">
+        <cx-cart-item
+          [parent]="form.controls[item.product.code]"
+          [item]="item"
+          [isReadOnly]="isReadOnly"
+          [cartIsLoading]="cartIsLoading"
+          (remove)="removeEntry($event)"
+          (update)="updateEntry($event)"
+          (updateStartDate)="updateStartDateForEntry($event)"
+          (updateProvider)="updateCurrentProvider($event)"
+          [options]="options"
+        >
+        </cx-cart-item>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!--<ng-template #totalHeader>-->
+  <!--<div class="cx-item-list-total col-md-2 col-lg-2 col-xl-2">-->
+    <!--{{ 'cartItems.total' | cxTranslate }}-->
+  <!--</div>-->
+<!--</ng-template>-->

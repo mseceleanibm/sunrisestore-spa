@@ -1,0 +1,230 @@
+<ng-container *ngIf="product$ | async as product else loading">
+  <div [ngClass]="compact ? 'cx-compact row' : 'row'">
+    <!-- Item Image -->
+    <div class="col-2 cx-image-container">
+      <a
+        [routerLink]="{ cxRoute: 'product', params: item.product } | cxUrl"
+        (click)="viewItem()"
+      >
+        <cx-media
+          [container]="item.product.images?.PRIMARY"
+          format="thumbnail"
+        ></cx-media>
+      </a>
+    </div>
+    <!-- Item Information -->
+    <div class="cx-info col-10">
+      <div class="cx-info-container row ">
+        <!-- Item Description -->
+        <div [ngClass]="compact ? '' : ' col-md-3 col-lg-3 col-xl-5'">
+          <div *ngIf="item.product.name" class="cx-name">
+            <a
+              class="cx-link"
+              [routerLink]="{ cxRoute: 'product', params: item.product } | cxUrl"
+              (click)="viewItem()"
+            >{{ item.product.name }}</a
+            >
+          </div>
+          <div *ngIf="item.product.code" class="cx-code">
+            {{ 'cartItems.id' | cxTranslate }} {{ item.product.code }}
+          </div>
+          <!-- Variants -->
+          <ng-container *cxFeatureLevel="'!1.5'">
+            <div
+              *ngFor="let variant of item.product.variantOptionQualifiers"
+              class="cx-property"
+            >
+              <div class="cx-label">{{ variant.name }}</div>
+              <div class="cx-value">{{ variant.value }}</div>
+            </div>
+          </ng-container>
+          <ng-container *cxFeatureLevel="'1.5'">
+            <div
+              *ngFor="
+              let variant of item.product.baseOptions[0]?.selected
+                ?.variantOptionQualifiers
+            "
+              class="cx-property"
+            >
+              <div class="cx-label" *ngIf="variant.name && variant.value">
+                {{ variant.name }}: {{ variant.value }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <!-- Item Price -->
+        <div
+          *ngIf="item.basePrice"
+          class="cx-price"
+          [ngClass]="compact ? '' : ' col-md-3 col-lg-3 col-xl-2'"
+        >
+          <div
+            class="cx-label"
+            [ngClass]="compact ? '' : ' d-block d-md-none d-lg-none d-xl-none'"
+          >
+            {{ getPrice() }}
+          </div>
+          <div *ngIf="item.basePrice" class="cx-value">
+            {{ getPrice() }}
+          </div>
+        </div>
+        <!-- Item Quantity -->
+        <div class="cx-quantity" [ngClass]="compact ? '' : ' col-3'">
+          <div
+            class="cx-label"
+            [ngClass]="compact ? '' : ' d-block d-md-none d-lg-none d-xl-none'"
+            placement="left"
+            title="{{ 'cartItems.quantityTitle' | cxTranslate }}"
+          >
+            {{ 'cartItems.quantity' | cxTranslate }}
+          </div>
+
+          <div *ngIf="isReadOnly" class="cx-value">
+            {{ item.quantity }}
+          </div>
+          <div
+            *ngIf="!isReadOnly && parent"
+            class="cx-value"
+            [formGroup]="parent"
+          >
+            <cx-item-counter
+              [isValueChangeable]="item.updateable"
+              [step]="1"
+              [min]="1"
+              [max]="item.product.stock?.stockLevelStatus != 'outOfStock' && item.product.stock?.stockLevel ? item.product.stock?.stockLevel : 1"
+              (update)="updateItem($event)"
+              [cartIsLoading]="cartIsLoading"
+              formControlName="quantity"
+            >
+            </cx-item-counter>
+          </div>
+        </div>
+        <!-- Total -->
+        <!--<ng-container-->
+          <!--*ngIf="isSaveForLaterEnabled() && options.isSaveForLater; else total"-->
+        <!--&gt;-->
+          <!--<div-->
+            <!--class="cx-total"-->
+            <!--[ngClass]="compact ? '' : ' col-md-3 col-lg-3 col-xl-2'"-->
+          <!--&gt;-->
+            <!--<div-->
+              <!--class="cx-label"-->
+              <!--[ngClass]="compact ? '' : ' d-block d-md-none d-lg-none d-xl-none'"-->
+            <!--&gt;-->
+              <!--{{ 'saveForLaterItems.stock' | cxTranslate }}-->
+            <!--</div>-->
+            <!--<div-->
+              <!--*ngIf="item.product?.stock?.stockLevel >= 0; else forceInstock"-->
+              <!--class="cx-value"-->
+            <!--&gt;-->
+              <!--{{ item.product.stock.stockLevel }}-->
+            <!--</div>-->
+            <!--<ng-template #forceInstock-->
+            <!--&gt;-->
+              <!--<div class="cx-value">-->
+                <!--{{ 'saveForLaterItems.forceInStock' | cxTranslate }}-->
+              <!--</div>-->
+            <!--</ng-template-->
+            <!--&gt;-->
+          <!--</div>-->
+        <!--</ng-container>-->
+      </div>
+      <!-- Availability -->
+      <div
+        *ngIf="isProductOutOfStock(item.product)"
+        class="cx-availability col-12"
+      >
+        {{ 'productSummary.outOfStock' | cxTranslate }}
+      </div>
+      <!-- Promotion -->
+      <ng-container *cxFeatureLevel="'!1.5'">
+        <cx-promotions [promotions]="potentialProductPromotions"></cx-promotions>
+      </ng-container>
+
+      <ng-container *cxFeatureLevel="'1.5'">
+        <ng-container
+          *ngIf="appliedProductPromotions$ | async as appliedProductPromotions"
+        >
+          <cx-promotions [promotions]="appliedProductPromotions"></cx-promotions>
+        </ng-container>
+      </ng-container>
+
+
+      <!--<div class="row">-->
+      <!-- Premise details -->
+      <!--<ng-container *ngIf="hasAddress()">-->
+      <!--<div class="col-md-6">-->
+      <!--<cx-premise-details-display-->
+      <!--[premiseDetail]="premiseDetails"-->
+      <!--[productCode]="item.product.code"-->
+      <!--[compact]="true"-->
+      <!--[isReadOnly]="isReadOnly"-->
+      <!--[entryNumber]="item.entryNumber"-->
+      <!--(move)="move()"-->
+      <!--(updatePremiseDetails)="updatePremiseDetails($event)"-->
+      <!--&gt;</cx-premise-details-display>-->
+      <!--</div>-->
+      <!--</ng-container>-->
+
+      <!-- Reason for purchase -->
+      <!--<div class="col-md-6">-->
+      <!--<cx-purchase-reason-->
+      <!--[contractStartDate]="item.contractStartDate"-->
+      <!--[serviceProvider]="serviceProvider"-->
+      <!--[productCode]="item.product.code"-->
+      <!--[selectedReasonForPurchase]="getReasonForPurchase()"-->
+      <!--[compact]="true"-->
+      <!--[isReadOnly]="isReadOnly"-->
+      <!--[entryNumber]="item.entryNumber"-->
+      <!--(move)="move()"-->
+      <!--(updateProvider)="switchProvider($event)"-->
+      <!--(updateStartDate)="updateContractStartDate($event)"-->
+      <!--&gt;-->
+      <!--</cx-purchase-reason>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!-- Actions -->
+      <div
+        *ngIf="(!isReadOnly || options.isSaveForLater) && item.updateable"
+        class="cx-actions col-12"
+      >
+        <ng-container *ngIf="!isProductOutOfStock(item.product)">
+          <ng-container
+            *ngTemplateOutlet="
+                    options.optionalBtn;
+                    context: { $implicit: { loading: cartIsLoading, item: item } }
+                  "
+          ></ng-container>
+        </ng-container>
+
+        <div class="col-md-3 col-lg-3 col-xl-3 cx-remove-btn">
+          <button class="link" [disabled]="cartIsLoading" (click)="removeItem()">
+            {{ 'common.remove' | cxTranslate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #total>
+    <div
+      *ngIf="item.totalPrice"
+      class="cx-total"
+      [ngClass]="compact ? '' : ' col-md-3 col-lg-3 col-xl-2'"
+    >
+      <div
+        class="cx-label"
+        [ngClass]="compact ? '' : ' d-block d-md-none d-lg-none d-xl-none'"
+      >
+        {{ 'cartItems.total' | cxTranslate }}
+      </div>
+      <div class="cx-value">{{ item.totalPrice.formattedValue }}</div>
+    </div>
+  </ng-template>
+</ng-container>
+<ng-template #loading>
+  <div class="cx-spinner">
+    <cx-spinner></cx-spinner>
+  </div>
+</ng-template>

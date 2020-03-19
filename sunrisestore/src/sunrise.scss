@@ -1,0 +1,41 @@
+@import '../node_modules/@spartacus/styles/scss/_theme.scss';
+
+$default_theme_color: rgb(230, 0, 60);
+$default_text_color: #fff;
+
+header {
+  background-color: white;
+}
+
+cx-searchbox {
+  @include media-breakpoint-up(md) {
+    background-color: #fff;
+    color: #575452;
+    border: 1px solid #575452;
+  }
+}
+
+.searchbox {
+  background-color: $default_text_color;
+}
+
+cx-mini-cart a {
+  background: $default_theme_color;
+}
+
+cx-navigation-ui.flyout h5 {
+  color: $default_theme_color;
+}
+
+cx-breadcrumb {
+  color: $default_text_color;
+  background-color: $default_theme_color;
+}
+
+cx-breadcrumb nav span a {
+  color: $default_text_color;
+}
+
+cx-product-images cx-media img {
+  max-width: 350px;
+}
