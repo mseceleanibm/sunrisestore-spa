@@ -1,7 +1,6 @@
 import {OrderEntry, Region} from '@spartacus/core';
 import {TmaProcessType, TmaSubscribedProduct} from './tma-cart.model';
 
-
 export enum TmaActionTypeEnum {
   ADD = 'ADD',
   UPDATE = 'UPDATE',
@@ -37,9 +36,10 @@ export interface TmaOrderEntry extends OrderEntry {
   subscribedProduct?: TmaSubscribedProduct;
   subscriptionTerm?: TmaSubscriptionTerm;
   contractStartDate?: string;
-  entryGroupNumbers?: number;
+  entryGroupNumbers?: number[];
   region?: Region;
   rootBpoCode?: string;
+  cartPrice?: TmaCartPrice;
 }
 
 export interface TmaCartPrice {

@@ -10,6 +10,7 @@
 
         <cx-cart-item-list
           [items]="entries"
+          [cartId]="cart.code"
           [cartIsLoading]="!(cartLoaded$ | async)"
           [potentialProductPromotions]="cart.potentialProductPromotions"
         ></cx-cart-item-list>

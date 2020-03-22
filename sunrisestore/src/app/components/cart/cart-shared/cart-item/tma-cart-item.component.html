@@ -99,35 +99,6 @@
             </cx-item-counter>
           </div>
         </div>
-        <!-- Total -->
-        <!--<ng-container-->
-          <!--*ngIf="isSaveForLaterEnabled() && options.isSaveForLater; else total"-->
-        <!--&gt;-->
-          <!--<div-->
-            <!--class="cx-total"-->
-            <!--[ngClass]="compact ? '' : ' col-md-3 col-lg-3 col-xl-2'"-->
-          <!--&gt;-->
-            <!--<div-->
-              <!--class="cx-label"-->
-              <!--[ngClass]="compact ? '' : ' d-block d-md-none d-lg-none d-xl-none'"-->
-            <!--&gt;-->
-              <!--{{ 'saveForLaterItems.stock' | cxTranslate }}-->
-            <!--</div>-->
-            <!--<div-->
-              <!--*ngIf="item.product?.stock?.stockLevel >= 0; else forceInstock"-->
-              <!--class="cx-value"-->
-            <!--&gt;-->
-              <!--{{ item.product.stock.stockLevel }}-->
-            <!--</div>-->
-            <!--<ng-template #forceInstock-->
-            <!--&gt;-->
-              <!--<div class="cx-value">-->
-                <!--{{ 'saveForLaterItems.forceInStock' | cxTranslate }}-->
-              <!--</div>-->
-            <!--</ng-template-->
-            <!--&gt;-->
-          <!--</div>-->
-        <!--</ng-container>-->
       </div>
       <!-- Availability -->
       <div
@@ -148,41 +119,6 @@
           <cx-promotions [promotions]="appliedProductPromotions"></cx-promotions>
         </ng-container>
       </ng-container>
-
-
-      <!--<div class="row">-->
-      <!-- Premise details -->
-      <!--<ng-container *ngIf="hasAddress()">-->
-      <!--<div class="col-md-6">-->
-      <!--<cx-premise-details-display-->
-      <!--[premiseDetail]="premiseDetails"-->
-      <!--[productCode]="item.product.code"-->
-      <!--[compact]="true"-->
-      <!--[isReadOnly]="isReadOnly"-->
-      <!--[entryNumber]="item.entryNumber"-->
-      <!--(move)="move()"-->
-      <!--(updatePremiseDetails)="updatePremiseDetails($event)"-->
-      <!--&gt;</cx-premise-details-display>-->
-      <!--</div>-->
-      <!--</ng-container>-->
-
-      <!-- Reason for purchase -->
-      <!--<div class="col-md-6">-->
-      <!--<cx-purchase-reason-->
-      <!--[contractStartDate]="item.contractStartDate"-->
-      <!--[serviceProvider]="serviceProvider"-->
-      <!--[productCode]="item.product.code"-->
-      <!--[selectedReasonForPurchase]="getReasonForPurchase()"-->
-      <!--[compact]="true"-->
-      <!--[isReadOnly]="isReadOnly"-->
-      <!--[entryNumber]="item.entryNumber"-->
-      <!--(move)="move()"-->
-      <!--(updateProvider)="switchProvider($event)"-->
-      <!--(updateStartDate)="updateContractStartDate($event)"-->
-      <!--&gt;-->
-      <!--</cx-purchase-reason>-->
-      <!--</div>-->
-      <!--</div>-->
 
       <!-- Actions -->
       <div

@@ -9,58 +9,46 @@
     <div class="cx-item-list-qty col-md-2 col-lg-3 col-xl-2">
       {{ 'cartItems.quantity' | cxTranslate }}
     </div>
-
-    <!--<ng-container-->
-      <!--*ngIf="-->
-        <!--isSaveForLaterEnabled() && options.isSaveForLater;-->
-        <!--else totalHeader-->
-      <!--"-->
-    <!--&gt;-->
-      <!--<div class="cx-item-list-total col-md-2 col-lg-2 col-xl-2">-->
-        <!--{{ 'saveForLaterItems.stock' | cxTranslate }}-->
-      <!--</div>-->
-    <!--</ng-container>-->
   </div>
 </div>
 
 <div [formGroup]="form">
-  <div class="cx-item-list-row" *ngFor="let item of items">
-    <div class="cx-item-list-items">
-      <ng-container *cxFeatureLevel="'!1.5'">
-        <cx-cart-item
-          [parent]="form.controls[item.product.code]"
-          [item]="item"
-          [isReadOnly]="isReadOnly"
-          [potentialProductPromotions]="getPotentialProductPromotionsForItem(item)"
-          [cartIsLoading]="cartIsLoading"
-          (remove)="removeEntry($event)"
-          (update)="updateEntry($event)"
-          (updateStartDate)="updateStartDateForEntry($event)"
-          (updateProvider)="updateCurrentProvider($event)"
-        >
-        </cx-cart-item>
+  <div *ngFor="let group of groupedItems">
+    <ng-container *ngIf="group">
+      <div class="dropdown-divider"></div>
+      <ng-container *ngIf="group[0].rootBpoCode">
+        <div class="row">
+          <div class="col-md-7 col-lg-7 col-xl-7">
+            <label class="label text-capitalize bold d-flex justify-content-center" disabled>{{getBpoName(group[0].rootBpoCode)}}</label>
+          </div>
+          <div class="col-md-3 col-lg-3 col-xl-3 cx-remove-btn">
+            <button class="btn btn-link" (click)="editItem(group[0].rootBpoCode, group[0].entryGroupNumbers[0])">
+              {{ 'common.edit' | cxTranslate }}
+            </button>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xl-2">
+            <p>&nbsp;</p>
+          </div>
+        </div>
       </ng-container>
-
-      <ng-container *cxFeatureLevel="'1.5'">
-        <cx-cart-item
-          [parent]="form.controls[item.product.code]"
-          [item]="item"
-          [isReadOnly]="isReadOnly"
-          [cartIsLoading]="cartIsLoading"
-          (remove)="removeEntry($event)"
-          (update)="updateEntry($event)"
-          (updateStartDate)="updateStartDateForEntry($event)"
-          (updateProvider)="updateCurrentProvider($event)"
-          [options]="options"
-        >
-        </cx-cart-item>
-      </ng-container>
-    </div>
+      <div class="cx-item-list-row" *ngFor="let item of group">
+        <div class="cx-item-list-items">
+          <ng-container *cxFeatureLevel="'!1.5'">
+            <cx-cart-item
+              [parent]="form.controls[item.product.code]"
+              [item]="item"
+              [isReadOnly]="isReadOnly"
+              [potentialProductPromotions]="getPotentialProductPromotionsForItem(item)"
+              [cartIsLoading]="cartIsLoading"
+              (remove)="removeEntry($event)"
+              (update)="updateEntry($event)"
+              (updateStartDate)="updateStartDateForEntry($event)"
+              (updateProvider)="updateCurrentProvider($event)"
+            >
+            </cx-cart-item>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
-
-<!--<ng-template #totalHeader>-->
-  <!--<div class="cx-item-list-total col-md-2 col-lg-2 col-xl-2">-->
-    <!--{{ 'cartItems.total' | cxTranslate }}-->
-  <!--</div>-->
-<!--</ng-template>-->

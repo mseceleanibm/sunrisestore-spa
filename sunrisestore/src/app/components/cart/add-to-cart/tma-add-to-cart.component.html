@@ -1,4 +1,4 @@
-<!--<ng-container *ngIf="checklistAction$ |async as checklistAction else loading">-->
+<ng-container *ngIf="activeUser$ |async as activeUser else loading">
   <!-- Quantity -->
   <div class="quantity" *ngIf="productCode && showQuantity">
     <label>{{ 'addToCart.quantity' | cxTranslate }} </label>
@@ -20,18 +20,18 @@
   </div>
 
   <!-- Add to cart button -->
-  <!--<ng-container *ngIf="!hasInstallationAddressChecklistAction(checklistAction)">-->
+  <ng-container *ngIf="entries$ |async as entries">
     <button
       *ngIf="hasStock"
       class="btn btn-primary btn-block"
       type="button"
       [disabled]="quantity <= 0 || quantity > maxQuantity"
-      (click)="addToCart()"
+      (click)="addEntryToCart(activeUser, entries)"
     >
       {{ 'addToCart.addToCart' | cxTranslate }}
     </button>
-  <!--</ng-container>-->
-<!--</ng-container>-->
+  </ng-container>
+</ng-container>
 <ng-template #loading>
   <div class="cx-spinner">
     <cx-spinner></cx-spinner>

@@ -1,0 +1,75 @@
+<ng-container *ngIf="guidedSellingItems$ | async as guidedSellingItems else tempDisplay">
+  <div class="card">
+    <div class="card-header">{{bpo.name}}</div>
+    <div class="card-body card-text">
+      <div *ngFor="let item of guidedSellingItems">
+        <div class="dropdown-divider"></div>
+        <div class="row">
+          <div class="col-2 cx-image-container">
+            <a
+              [routerLink]="{ cxRoute: 'product', params: item.product } | cxUrl"
+            >
+              <cx-media
+                [container]="item.product.images?.PRIMARY"
+                format="thumbnail"
+              ></cx-media>
+            </a>
+          </div>
+          <div class="col-md-6">
+            <div *ngIf="item.product.name" class="cx-name">
+              <a
+                class="cx-link"
+                [routerLink]="{ cxRoute: 'product', params: item.product } | cxUrl"
+              >
+                {{ item.product.name }}
+              </a
+              >
+            </div>
+          </div>
+          <div class="col-md-4 justify-content-end">
+            {{getPrice(item)}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+<ng-template #tempDisplay>
+  <p>Temp</p>
+  <div class="card">
+    <div class="card-header">{{bpo.name}}</div>
+    <div class="card-body card-text">
+      <div *ngFor="let item of items">
+        <div class="dropdown-divider"></div>
+        <div class="row">
+          <div class="col-2 cx-image-container">
+            <a
+              [routerLink]="{ cxRoute: 'product', params: item.product } | cxUrl"
+            >
+              <cx-media
+                [container]="item.product.images?.PRIMARY"
+                format="thumbnail"
+              ></cx-media>
+            </a>
+          </div>
+          <div class="col-md-6">
+            <div *ngIf="item.product.name" class="cx-name">
+              <a
+                class="cx-link"
+                [routerLink]="{ cxRoute: 'product', params: item.product } | cxUrl"
+              >
+                {{ item.product.name }}
+              </a
+              >
+            </div>
+          </div>
+          <div class="col-md-4 justify-content-end">
+            {{getPrice(item)}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

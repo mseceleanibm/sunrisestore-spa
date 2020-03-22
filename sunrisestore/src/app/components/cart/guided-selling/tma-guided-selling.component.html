@@ -1,0 +1,67 @@
+<div class="slot">
+  <div class="row">
+    <button [ngClass]="page == '1' ? 'btn btn-link' : 'unfocused btn btn-link'" (click)="switchPage('1')">Plans</button>
+    <button class="black btn btn-link nounderline" disabled>&nbsp; > &nbsp;</button>
+    <button [ngClass]="page == '2' ? 'btn btn-link' : 'unfocused btn btn-link'" (click)="switchPage('2')">Sim Cards</button>
+  </div>
+
+  <ng-container *ngIf="activeCart$ | async as activeCart">
+    <div class="row col-md-5">
+      <cx-guided-selling-bpo-content
+        [items]="getItems(activeCart)"
+        [bpo]="bpo"
+      >
+      </cx-guided-selling-bpo-content>
+    </div>
+  </ng-container>
+
+  <div class="cx-product-container">
+    <div class="row">
+      <cx-cgs-product-grid-item
+        *ngFor="let product of products"
+        [product]="product"
+        (changeSpoInBpo)="changeSpoInBpo($event)"
+        class="col-12 col-sm-6 col-md-4">
+      </cx-cgs-product-grid-item>
+    </div>
+  </div>
+
+  <div class="row">
+    <ng-container *ngIf="page != '1'">
+      <div class="col-md-4 d-flex  justify-content-start">
+        <button class="btn btn-secondary btn-block" (click)="switchPage('1')">{{'common.back' | cxTranslate}}</button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="page != '2'">
+      <div class="col-md-4 d-flex  justify-content-start">
+        &nbsp;
+      </div>
+    </ng-container>
+    <div class="col-md-4 d-flex  justify-content-start">
+      &nbsp;
+    </div>
+    <ng-container *ngIf="page == '1'">
+      <div class="col-md-4 d-flex  justify-content-end">
+        <button class="btn btn-secondary btn-block" (click)="switchPage('2')">{{'common.next' | cxTranslate}}</button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="page == '2'">
+      <div class="col-md-4 d-flex  justify-content-end">
+        <button class="btn btn-secondary btn-block"
+                [routerLink]="{ cxRoute: 'cart' } | cxUrl"
+        >{{'common.finish' | cxTranslate}}</button>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="row">
+    &nbsp;
+  </div>
+</div>
+
+
+<ng-template #loading>
+  <div class="cx-spinner">
+    <cx-spinner></cx-spinner>
+  </div>
+</ng-template>

@@ -3,6 +3,7 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import {TmaStorefrontModule} from './tma-storefront.module';
 import {ConfigModule, provideConfig} from '@spartacus/core';
 import {TmaStorefrontConfig} from '../shared/tma-storefront-config';
+import {tmaB2cLayoutConfig} from "../config/tma-b2c-layout-config";
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import {TmaStorefrontConfig} from '../shared/tma-storefront-config';
     }),
 
     ConfigModule.withConfig(b2cLayoutConfig),
+    ConfigModule.withConfig(tmaB2cLayoutConfig),
     ConfigModule.withConfigFactory(defaultCmsContentConfig),
 
     // the cms lib module contains all components that added in the bundle
@@ -21,7 +23,7 @@ import {TmaStorefrontConfig} from '../shared/tma-storefront-config';
   ],
   exports: [TmaStorefrontModule],
 })
-export class TmaB2cStorefrontModule extends B2cStorefrontModule{
+export class TmaB2cStorefrontModule extends B2cStorefrontModule {
   static withConfig(
     config?: TmaStorefrontConfig
   ): ModuleWithProviders<TmaB2cStorefrontModule> {
