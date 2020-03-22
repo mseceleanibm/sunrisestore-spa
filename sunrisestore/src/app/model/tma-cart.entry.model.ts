@@ -43,15 +43,20 @@ export interface TmaOrderEntry extends OrderEntry {
 }
 
 export interface TmaCartPrice {
-  cartPrice?: TmaChildCartPrice[],
+  childPrices?: TmaChildCartPrice[],
 }
 
 export interface TmaChildCartPrice {
-  taxIncludedAmount?: TmaTaxIncludedAmount;
-  recurringChargePeriod?: string
+  taxIncludedAmount?: TmaTaxIncludedAmount,
+  billingTime?: TmaBillingTime,
 }
 
 export interface TmaTaxIncludedAmount {
   value?: string,
-  currencyIso: string
+  currencyIso?: string,
+  formattedValue?: string,
+}
+
+export interface TmaBillingTime {
+  name?: string,
 }

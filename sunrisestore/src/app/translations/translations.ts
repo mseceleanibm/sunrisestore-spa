@@ -10,5 +10,10 @@ export const tmaTranslations: TranslationResources = {
         finish: 'Finish',
       },
     },
+    cart: {
+      orderCost: {
+        totalMonthly: 'Monthly',
+      }
+    }
   },
 };

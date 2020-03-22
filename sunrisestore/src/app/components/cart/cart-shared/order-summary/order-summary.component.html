@@ -1,4 +1,4 @@
-<h4>{{ 'orderCost.orderSummary' | cxTranslate }}</h4>
+<h4>{{ 'orderCost.orderSummary' | cxTranslate }} </h4>
 
 <div class="cx-summary-partials" *ngIf="cart">
   <div class="cx-summary-row">
@@ -30,7 +30,6 @@
     </div>
   </div>
 
-  {{cart?.price}}
   <div class="cx-summary-row" *ngIf="getMonthlyTotalPrice(cart.price, 'monthly', 'CART_TOTAL_PRICE') as totalPrice">
     <div class="col-6 cx-summary-label">
       {{ 'orderCost.totalMonthly' | cxTranslate }}
@@ -51,10 +50,10 @@
     {{ 'orderCost.discount' | cxTranslate }}
     {{ cart.totalDiscounts?.formattedValue }}
   </div>
-  <div class="cx-summary-row" *ngIf="!cart.net">
-    {{ 'orderCost.grossTax' | cxTranslate }}
-    {{ cart.totalTax?.formattedValue }}.
-  </div>
+  <!--<div class="cx-summary-row" *ngIf="!cart.net">-->
+    <!--{{ 'orderCost.grossTax' | cxTranslate }}-->
+    <!--{{ cart.totalTax?.formattedValue }}.-->
+  <!--</div>-->
 </div>
 
 <!--
