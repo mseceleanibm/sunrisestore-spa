@@ -14,6 +14,9 @@ import {TmaAuthModule} from './auth/tma-auth-module';
 import {TmaCartComponentModule} from './components/cart/tma-cart-module';
 import {TmaCartDetailsModule} from './components/cart/cart-details/tma-cart-details.module';
 import {CartTotalsModule} from './components/cart/cart-totals/cart-totals.module';
+import {TmaGuidedSellingModule} from "./components/cart/guided-selling/tma-guided-selling.module";
+import {ConfigModule} from "@spartacus/core";
+import {tmaTranslations} from "./translations/translations";
 
 @NgModule({
   declarations: [
@@ -55,6 +58,11 @@ import {CartTotalsModule} from './components/cart/cart-totals/cart-totals.module
         level: '1.4'
       }
     }),
+    ConfigModule.withConfig({
+      i18n: {
+        resources: tmaTranslations
+      }
+    }),
     SunriseProductIntroModule,
     SunriseProductSummaryModule,
     TmaOccCartModule,
@@ -63,6 +71,7 @@ import {CartTotalsModule} from './components/cart/cart-totals/cart-totals.module
     TmaCartComponentModule,
     TmaCartDetailsModule,
     CartTotalsModule,
+    TmaGuidedSellingModule,
     TmaAuthModule,
     TmfModule.forRoot()
   ],
