@@ -14,7 +14,7 @@ import {TmaAuthModule} from './auth/tma-auth-module';
 import {TmaCartComponentModule} from './components/cart/tma-cart-module';
 import {TmaCartDetailsModule} from './components/cart/cart-details/tma-cart-details.module';
 import {CartTotalsModule} from './components/cart/cart-totals/cart-totals.module';
-import {TmaGuidedSellingModule} from "./components/cart/guided-selling/tma-guided-selling.module";
+// import {TmaGuidedSellingModule} from "./components/cart/guided-selling/tma-guided-selling.module";
 import {ConfigModule} from "@spartacus/core";
 import {tmaTranslations} from "./translations/translations";
 
@@ -34,6 +34,8 @@ import {tmaTranslations} from "./translations/translations";
               details:
                 'products/${productCode}?fields=averageRating,stock(DEFAULT),description,availableForPickup,code,url,price(DEFAULT),numberOfReviews,manufacturer,categories(FULL),priceRange,multidimensional,configuratorType,configurable,tags,images(FULL),productOfferingPrice(FULL),productSpecification,validFor,preconfigSpos',
             },
+            cart:
+              'users/${userId}/carts/${cartId}?fields=DEFAULT,potentialProductPromotions,appliedProductPromotions,potentialOrderPromotions,appliedOrderPromotions,entries(totalPrice(formattedValue),product(images(FULL),stock(FULL)),basePrice(formattedValue,value),updateable),totalPrice(formattedValue),totalItems,totalPriceWithTax(formattedValue),totalDiscounts(value,formattedValue),subTotal(formattedValue),deliveryItemsQuantity,deliveryCost(formattedValue),totalTax(formattedValue, value),pickupItemsQuantity,net,appliedVouchers,productDiscounts(formattedValue),user'
           }
         },
         tmf: {
@@ -71,7 +73,7 @@ import {tmaTranslations} from "./translations/translations";
     TmaCartComponentModule,
     TmaCartDetailsModule,
     CartTotalsModule,
-    TmaGuidedSellingModule,
+    // TmaGuidedSellingModule,
     TmaAuthModule,
     TmfModule.forRoot()
   ],

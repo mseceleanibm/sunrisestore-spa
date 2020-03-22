@@ -11,7 +11,7 @@ import {Observable} from "rxjs";
 export interface TmaItem extends Item {
   entryNumber: number;
   subscribedProduct?: TmaSubscribedProduct;
-  cartPrice?: TmaCartPrice;
+  price?: TmaCartPrice;
   entryGroupNumbers?: number[];
 }
 
@@ -113,9 +113,11 @@ export default class TmaCartItemComponent extends CartItemComponent {
   }
 
   protected getPrice(): string {
-    const tmaChildCartPrice = this.item.cartPrice.cartPrice.find(cartPrice => cartPrice != null);
+    const tmaChildCartPrice = this.item.price.childPrices.find(cartPrice => cartPrice != null);
     if (tmaChildCartPrice) {
-      return tmaChildCartPrice.taxIncludedAmount.value + ' ' + tmaChildCartPrice.taxIncludedAmount.currencyIso + ' /' + tmaChildCartPrice.recurringChargePeriod;
+      return tmaChildCartPrice.taxIncludedAmount.formattedValue + ' ' + tmaChildCartPrice.billingTime.name;
+    } else {
+      return 'No price found';
     }
   }
 }
