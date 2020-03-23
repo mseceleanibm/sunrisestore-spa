@@ -1,15 +1,22 @@
 import {AddedToCartDialogComponent, ModalService} from '@spartacus/storefront';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {TmaCartService} from '../../../../features/cart/facade/tma-cart.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {tap} from 'rxjs/operators';
 import {TmaOrderEntry} from '../../../../model/tma-cart.entry.model';
+import {Cart} from "@spartacus/core";
 
 @Component({
   selector: 'cx-added-to-cart-dialog',
   templateUrl: './tma-added-to-cart-dialog.component.html',
 })
 export class TmaAddedToCartDialogComponent extends AddedToCartDialogComponent {
+
+  @Input()
+  backupEntry: TmaOrderEntry;
+
+  @Input()
+  backupCart: Cart;
 
   constructor(
     protected modalService: ModalService,
@@ -38,10 +45,10 @@ export class TmaAddedToCartDialogComponent extends AddedToCartDialogComponent {
         }
       })
     );
-
   }
 
   dismissModal(reason?: any): void {
+    this.cartService.loadCart();
     this.modalService.dismissActiveModal(reason);
   }
 

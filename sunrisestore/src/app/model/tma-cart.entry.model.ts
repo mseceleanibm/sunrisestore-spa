@@ -44,11 +44,17 @@ export interface TmaOrderEntry extends OrderEntry {
 
 export interface TmaCartPrice {
   childPrices?: TmaChildCartPrice[],
+  cartPrice?: TmaDeprecatedCartPrice[]
 }
 
 export interface TmaChildCartPrice {
   taxIncludedAmount?: TmaTaxIncludedAmount,
   billingTime?: TmaBillingTime,
+}
+
+export interface TmaDeprecatedCartPrice {
+  taxIncludedAmount?: TmaTaxIncludedAmount,
+  recurringChargePeriod: string
 }
 
 export interface TmaTaxIncludedAmount {

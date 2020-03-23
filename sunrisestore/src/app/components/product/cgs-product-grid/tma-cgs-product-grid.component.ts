@@ -28,8 +28,8 @@ export class TmaCgsProductGridComponent implements OnInit {
 
   }
 
-  select(productCode: string) {
-    this.changeSpoInBpo.emit(productCode);
+  select(product: TmaProduct) {
+    this.changeSpoInBpo.emit(product);
   }
 
 

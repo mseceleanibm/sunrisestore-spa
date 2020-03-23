@@ -3,13 +3,14 @@ import {GuidedSellingMock1} from "./tma-guided-selling-1.mock-data";
 import {GuidedSellingMock2} from "./tma-guided-selling-2.mock-data";
 import {ActivatedRoute} from "@angular/router";
 import {TmaCartService} from "../../../features/cart/facade/tma-cart.service";
-import {Cart, GlobalMessageService, GlobalMessageType, ProductService, User, UserService} from "@spartacus/core";
-import {first} from "rxjs/operators";
+import {BaseSiteService, Cart, GlobalMessageService, GlobalMessageType, ProductService, User, UserService} from "@spartacus/core";
+import {first, subscribeOn} from "rxjs/operators";
 import {TmaOrderEntry} from "../../../model/tma-cart.entry.model";
 import {Observable} from "rxjs";
 import {TmaProduct} from "../../../model/tma-product.model";
 import {TmaProcessTypeEnum} from "../../../model/tma-cart.model";
 import {TmaGuidedSellingInteractionService} from "../../../features/guided-selling/tma-guided-selling-interaction.service";
+import {TmaMockCartService} from "../../../features/cart/facade/tma-mock-cart.service";
 
 @Component({
   selector: 'cx-guided-selling',
@@ -26,6 +27,7 @@ export class TmaGuidedSellingComponent implements OnInit {
   rootBpoCode: string;
   entryGroupNumber: number;
 
+  baseSietId: string
   activeUser: User;
   activeCart$: Observable<Cart>;
   items: TmaOrderEntry[];
@@ -38,6 +40,8 @@ export class TmaGuidedSellingComponent implements OnInit {
     protected productService: ProductService,
     protected globalMessageService: GlobalMessageService,
     protected guidedSellingInteractionService: TmaGuidedSellingInteractionService,
+    protected baseSiteService: BaseSiteService,
+    protected mockCartService: TmaMockCartService
   ) {
     this.route.queryParams.subscribe(params => {
       this.cartId = params['cartId'];
@@ -50,6 +54,7 @@ export class TmaGuidedSellingComponent implements OnInit {
   ngOnInit(): void {
     this.page = '1';
     this.products = GuidedSellingMock1.products;
+    this.baseSiteService.getActive().pipe(first((baseSiteId: string) => baseSiteId != null)).subscribe((baseSiteId: string) => this.baseSietId = baseSiteId);
     this.userService.get().pipe(first((activeUser: User) => activeUser != null)).subscribe((activeUser: User) => this.activeUser = activeUser);
     this.activeCart$ = this.cartService.getActive();//.pipe(first((activeCart: Cart) => activeCart != null)).subscribe((activeCart: Cart) => this.activeCart = activeCart);
     this.productService.get(this.rootBpoCode).pipe(first((prod: TmaProduct) => prod != null)).subscribe((prod: TmaProduct) => this.bpo = prod);
@@ -67,28 +72,34 @@ export class TmaGuidedSellingComponent implements OnInit {
     }
   }
 
-  changeSpoInBpo(productCode: string) {
+  changeSpoInBpo(product: TmaProduct) {
     let keyWord = this.page == '1' ? 'freedom' : 'sim';
 
     let currentItem: TmaOrderEntry = this.items.find((item: TmaOrderEntry) => item.product.code.includes(keyWord));
+
+    console.log("entries: ", this.items);
+    console.log("currentItem: ", currentItem);
     let newItemList: TmaOrderEntry[] = this.items;
 
 
     if (currentItem) {
-      if (currentItem.product.code == productCode) {
+      if (currentItem.product.code == product.code) {
         this.globalMessageService.add(currentItem.product.name + " already in the deal", GlobalMessageType.MSG_TYPE_INFO);
         return;
       }
 
       newItemList = this.items.filter((item: TmaOrderEntry) => item.entryNumber != currentItem.entryNumber);
-      this.cartService.removeEntry(currentItem);
+      // this.mockCartService.removeEntry(this.baseSietId, this.activeUser.uid, this.cartId, currentItem.entryNumber);
+      // this.cartService.removeEntry(currentItem);
     }
 
-    let newEntry: TmaOrderEntry = this.getCartEntry(productCode, this.rootBpoCode, this.entryGroupNumber);//, this.products.find((product: TmaProduct) => product.code == productCode));
+    // this.cartService.reloadActiveCart();
+    console.log("entrygroupNr: ", this.entryGroupNumber);
+    let newEntry: TmaOrderEntry = this.getCartEntry(product, this.rootBpoCode, this.entryGroupNumber);//, this.products.find((product: TmaProduct) => product.code == productCode));
+    console.log("new entry: ", newEntry);
     this.cartService.addCartEntry(newEntry, this.activeUser.uid);
 
-    this.cartService.reloadActiveCart();
-    this.cartService.getActive().pipe(first((activeCart: Cart) => activeCart != null)).subscribe((activeCart: Cart) => console.log(" $$$ ACTIVE: ", activeCart));
+    // this.cartService.reloadActiveCart();
 
     newItemList.push(newEntry);
 
@@ -101,6 +112,10 @@ export class TmaGuidedSellingComponent implements OnInit {
     }
 
     this.items = [];
+    if (!cart || !cart.entries) {
+      return this.items;
+    }
+
     cart.entries.forEach((entry: TmaOrderEntry) => {
       let groupNr: number = entry.entryGroupNumbers[0] ? entry.entryGroupNumbers[0] : -1;
       if (groupNr == this.entryGroupNumber) {
@@ -111,14 +126,28 @@ export class TmaGuidedSellingComponent implements OnInit {
     return this.items;
   }
 
-  protected getCartEntry(productCode: string, rootBpoCode: string, entryGroupNumber: number): TmaOrderEntry {
+  protected getCartEntry(product: TmaProduct, rootBpoCode: string, entryGroupNumber: number): TmaOrderEntry {
+    let entryPrice = product.code == 'freedom_europe_data' ? '37.5' : product.code == 'freedom_young_europe_data' ? '45.0' : '0.0';
+    let recurringChargePeriod = product.code == 'freedom_europe_data' || product.code == 'freedom_young_europe_data' ? 'Monthly' : 'On First Bill';
+
     return {
-      entryGroupNumbers: [entryGroupNumber],
+      entryGroupNumbers: [+entryGroupNumber],
+      product: product,
+      cartPrice: {
+        cartPrice: [
+          {
+            taxIncludedAmount: {
+              value: entryPrice,
+              currencyIso: 'USD',
+              formattedValue: '$' + entryPrice
+            },
+            recurringChargePeriod: recurringChargePeriod
+          }
+        ]
+      },
       processType: {id: TmaProcessTypeEnum.ACQUISITION},
       rootBpoCode: rootBpoCode,
       quantity: 1
     };
   }
-
-
 }

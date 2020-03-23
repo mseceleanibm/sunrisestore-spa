@@ -195,7 +195,9 @@ export class TmaCartService extends CartService {
 
   removeEntry(entry: TmaOrderEntry): void {
     if (this.activeCartService) {
-      return this.activeCartService.removeEntry(entry);
+      this.activeCartService.removeEntry(entry);
+      this.activeCartService.initializeActiveCart();
+      return;
     }
     this.store.dispatch(
       new CartActions.CartRemoveEntry({
@@ -204,6 +206,7 @@ export class TmaCartService extends CartService {
         entry: entry.entryNumber,
       })
     );
+    this.loadCart();
   }
 
   getCartMergeComplete(): Observable<boolean> {

@@ -31,7 +31,10 @@ export class TmaGuidedSellingBpoContentComponent implements OnInit {
   protected getPrice(item: TmaOrderEntry): string {
     const tmaChildCartPrice = item.cartPrice.cartPrice.find(cartPrice => cartPrice != null);
     if (tmaChildCartPrice) {
-      return tmaChildCartPrice.taxIncludedAmount.value + ' ' + tmaChildCartPrice.taxIncludedAmount.currencyIso + ' /' + tmaChildCartPrice.recurringChargePeriod;
+      let value = tmaChildCartPrice.taxIncludedAmount.formattedValue ?
+        tmaChildCartPrice.taxIncludedAmount.formattedValue :
+        tmaChildCartPrice.taxIncludedAmount.value + ' ' + tmaChildCartPrice.taxIncludedAmount.currencyIso;
+      return value + ' / ' + tmaChildCartPrice.recurringChargePeriod;
     }
   }
 }

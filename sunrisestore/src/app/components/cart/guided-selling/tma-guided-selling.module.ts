@@ -6,6 +6,8 @@ import {CmsConfig, ConfigModule, FeaturesConfigModule, I18nModule, UrlModule} fr
 import {TmaGuidedSellingComponent} from "./tma-guided-selling.component";
 import {TmaCgsProductGridModule} from "../../product/cgs-product-grid/tma-cgs-product-grid.module";
 import {TmaGuidedSellingBpoContentComponent} from "./guided-selling-bpo-conten/tma-guided-selling-bpo-content.component";
+import {TmaActiveCartService} from "../../../features/cart/facade/tma-active-cart.service";
+import {TmaMockCartService} from "../../../features/cart/facade/tma-mock-cart.service";
 
 @NgModule({
   imports: [
@@ -29,6 +31,7 @@ import {TmaGuidedSellingBpoContentComponent} from "./guided-selling-bpo-conten/t
   declarations: [TmaGuidedSellingComponent, TmaGuidedSellingBpoContentComponent],
   entryComponents: [TmaGuidedSellingComponent, TmaGuidedSellingBpoContentComponent],
   exports: [TmaGuidedSellingComponent, TmaGuidedSellingBpoContentComponent],
+  providers: [TmaMockCartService]
 })
 export class TmaGuidedSellingModule {
 }
