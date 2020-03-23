@@ -2,12 +2,14 @@
   [routerLink]="{ cxRoute: 'product', params: product } | cxUrl"
   class="cx-product-image-container"
 >
+  <ng-container *ngIf="productDb$ | async as productDb">
   <cx-media
     class="cx-product-image"
-    [container]="product.images?.PRIMARY"
+    [container]="productDb.images?.PRIMARY"
     format="product"
-    [alt]="product.summary"
+    [alt]="productDb.summary"
   ></cx-media>
+  </ng-container>
 </a>
 
 
@@ -29,9 +31,6 @@
     [rating]="product?.averageRating"
     [disabled]="true"
   ></cx-star-rating>
-  <div class="d-flex justify-content-center" *ngIf="!product.averageRating">
-    {{ 'productDetails.noReviews' | cxTranslate }}
-  </div>
 </div>
 <div class="cx-product-price-container">
   <div class="cx-product-price" aria-label="Product price">
